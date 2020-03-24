@@ -31,7 +31,7 @@ while True:
         money_list = ""
         for x in full_page:
             index += 1
-            if "$" in x:
+            if "$" in x or "Lump" in x or "monthly" in x:
                 capital = False
                 capital_index = index
                 period = False
@@ -41,13 +41,16 @@ while True:
                     for letter in alphabet_capital:
                         if letter in full_page[capital_index]:
                             capital = True
-                    capital_index -= 1
+                    if capital is not True:
+                        capital_index -= 1
                 while period is not True:
                     if "." in full_page[period_index] and "$" not in full_page[period_index]:
+                        print("Period Index: " + str(period_index))
+                        print("Word: " + str(full_page[period_index]))
                         period = True
-                    else:
+                    if period is not True:
                         period_index += 1
-                for y in range(capital_index, period_index):
+                for y in range(capital_index - 3, period_index + 1):
                     money_list += full_page[y]
                     money_list += " "
                     # money_list.append(" ")
