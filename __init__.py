@@ -1,7 +1,8 @@
 import PyPDF2
+import pprint
 
 alphabet_capital = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-numbers_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+numbers_list = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 # while loop so the program re-runs when we finish
 while True:
@@ -29,51 +30,52 @@ while True:
         money_list = ""
         # blacklist of indexes that have already been used so duplicates dont occur
         index_blacklist = []
-        for x in full_page:
+        for word in full_page:
             # start increasing index var so we can keep track of where we are
             index += 1
             # parameters for grabbing text
-            if "$" in x or "Lump" in x or "lump" in x or "Monthly" in x or "monthly" in x:
-                # capital goes to the left until it satisfies parameters and becomes true,
-                capital = False
-                capital_index = index
-                c_index_counter = 0
-                period = False
-                period_index = index
-                p_index_counter = 0
-                # find the index of the capital letter
-                while capital is not True:
-                    for letter in alphabet_capital:
-                        if letter in full_page[capital_index] or c_index_counter >= 3:
-                            capital = True
-                    if capital is not True:
-                        capital_index -= 1
-                        c_index_counter += 1
-                while period is not True:
-                    if "." in full_page[period_index] and "$" not in full_page[period_index] or p_index_counter >= 25:
-                        # print("Period Index: " + str(period_index))
-                        # print("Word: " + str(full_page[period_index]))
-                        period = True
-                    else:
-                        period_index += 1
-                        p_index_counter += 1
-                    if "$" in full_page[period_index]:
-                        period_index -= 1
-                        period = True
-                money_list_hold = ""
-                for y in range(capital_index, period_index + 1):
-                    if y not in index_blacklist:
-                        money_list_hold += full_page[y]
-                        money_list_hold += " "
-                        index_blacklist.append(y)
-                if money_list_hold and any(x in money_list_hold for x in numbers_list):
-                    money_list += "^"
-                    money_list += money_list_hold
-                    money_list += "\n"
-                        # if y == period_index:
-                        #     money_list += "\n"
-                    # money_list.append("\n")
-                    # money_list += "\n"
+            if "$" in word or "Lump" in word or "lump" in word or "Monthly" in word or "monthly" in word:
+                if any([True for number in numbers_list if number in word]):
+                    # capital goes to the left until it satisfies parameters and becomes true,
+                    capital = False
+                    capital_index = index
+                    c_index_counter = 0
+                    period = False
+                    period_index = index
+                    p_index_counter = 0
+                    # find the index of the capital letter
+                    while capital is not True:
+                        for letter in alphabet_capital:
+                            if letter in full_page[capital_index] or c_index_counter >= 3:
+                                capital = True
+                        if capital is not True:
+                            capital_index -= 1
+                            c_index_counter += 1
+                    while period is not True:
+                        if "." in full_page[period_index] and "$" not in full_page[period_index] or p_index_counter >= 25:
+                            # print("Period Index: " + str(period_index))
+                            # print("Word: " + str(full_page[period_index]))
+                            period = True
+                        else:
+                            period_index += 1
+                            p_index_counter += 1
+                        if "$" in full_page[period_index]:
+                            period_index -= 1
+                            period = True
+                    money_list_hold = ""
+                    for y in range(capital_index, period_index + 1):
+                        if y not in index_blacklist:
+                            money_list_hold += full_page[y]
+                            money_list_hold += " "
+                            index_blacklist.append(y)
+                    if money_list_hold and any(x in money_list_hold for x in numbers_list):
+                        money_list += "^"
+                        money_list += money_list_hold
+                        money_list += "\n"
+                            # if y == period_index:
+                            #     money_list += "\n"
+                        # money_list.append("\n")
+                        # money_list += "\n"
         print(money_list)
 
 
@@ -116,6 +118,7 @@ while True:
                 age += full_page[index - 1] + " "
                 age += full_page[index] + " "
                 age += full_page[index + 1]
+                # indented because "Amanda is 20 years old."
                 if "is" in full_page[index - 2]:
                     name += full_page[index - 4] + " "
                     name += full_page[index - 3]
@@ -131,19 +134,81 @@ while True:
 
     def percentages():
         index = -1
-        percentages_list = []
+        percentages_list = ""
         for word in full_page:
             index += 1
             if "%" in word:
+                percentages_list += "^"
                 for index_per in range(index-3, index+3):
-                    percentages_list.append(index_per)
-                    percentages_list.append(" ")
-                percentages_list.append("\n")
-                print(percentages_list)
+                    percentages_list += full_page[index_per]
+                    percentages_list += " "
+                percentages_list += "\n"
+        print(percentages_list)
+
+    def dev_tools():
+        index = -1
+        # full page
+        print(full_page)
+
+    def second_scan():
+        # index starts at -1 because it must start at 0 along with full_page
+        index = -1
+        money_list2 = ""
+        # blacklist of indexes that have already been used so duplicates dont occur
+        index_blacklist2 = []
+        full_page2 = list(full_page_string)
+        for word in full_page2:
+            # start increasing index var so we can keep track of where we are
+            index += 1
+            # parameters for grabbing text
+            if "$" in word:
+                # if any([True for number in numbers_list if number in word]):
+                # capital goes to the left until it satisfies parameters and becomes true,
+                capital = False
+                capital_index = index
+                c_index_counter = 0
+                period = False
+                period_index = index
+                p_index_counter = 0
+                # find the index of the capital letter
+                while capital is not True:
+                    for letter in alphabet_capital:
+                        if letter in full_page2[capital_index] or c_index_counter >= 15:
+                            capital = True
+                    if capital is not True:
+                        capital_index -= 1
+                        c_index_counter += 1
+                while period is not True:
+                    if "$" not in full_page2[period_index] and p_index_counter >= 75:
+                        # print("Period Index: " + str(period_index))
+                        # print("Word: " + str(full_page[period_index]))
+                        period = True
+                    else:
+                        period_index += 1
+                        p_index_counter += 1
+                    if "$" in full_page2[period_index]:
+                        period_index -= 1
+                        period = True
+                money_list_hold = ""
+                for y in range(capital_index, period_index + 1):
+                    if y not in index_blacklist2:
+                        money_list_hold += full_page2[y]
+                        index_blacklist2.append(y)
+                if money_list_hold and any(x in money_list_hold for x in numbers_list):
+                    money_list2 += "^"
+                    money_list2 += money_list_hold
+                    money_list2 += "\n"
+                    # if y == period_index:
+                    #     money_list += "\n"
+                    # money_list.append("\n")
+                    # money_list += "\n"
+        print(money_list2)
+
 
 
     while True:
-        print("Options:\n(1)All Monetary References\n(2)Stats\n(3)Percentages\n(4)New Lead")
+        print("Options:\n(1)All Monetary References\n(2)Stats\n(3)Percentages\n(4)New Lead\n(5)Dev Tools\n"
+              "(6)Alphabet Scan")
         hold_input = input()
         if hold_input == "1":
             money()
@@ -156,3 +221,8 @@ while True:
             hold_input = None
         elif hold_input == "4":
             break
+        elif hold_input == "5":
+            dev_tools()
+        elif hold_input == "6":
+            second_scan()
+
