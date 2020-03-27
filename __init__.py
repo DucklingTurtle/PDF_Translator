@@ -129,10 +129,21 @@ while True:
         else:
             print("Unemployed: Unlikely" + "\n")
 
+    def percentages():
+        index = -1
+        percentages_list = []
+        for word in full_page:
+            index += 1
+            if "%" in word:
+                for index_per in range(index-3, index+3):
+                    percentages_list.append(index_per)
+                    percentages_list.append(" ")
+                percentages_list.append("\n")
+                print(percentages_list)
 
 
     while True:
-        print("Options:\n(1)All Monetary References\n(2)Stats\n(3)New Lead")
+        print("Options:\n(1)All Monetary References\n(2)Stats\n(3)Percentages\n(4)New Lead")
         hold_input = input()
         if hold_input == "1":
             money()
@@ -141,4 +152,7 @@ while True:
             stats()
             hold_input = None
         elif hold_input == "3":
+            percentages()
+            hold_input = None
+        elif hold_input == "4":
             break
