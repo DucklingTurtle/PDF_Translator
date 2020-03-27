@@ -1,2 +1,2 @@
-def Petition():
+def petition():
     x = 1
